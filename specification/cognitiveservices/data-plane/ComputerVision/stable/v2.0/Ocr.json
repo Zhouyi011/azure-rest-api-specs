@@ -110,6 +110,135 @@
           }
         }
       }
+    },
+    "/read": {
+      "post": {
+        "description": "Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms. When you use the Read interface, the response contains OCR results.",
+        "operationId": "Read",
+        "parameters": [
+          {
+            "$ref": "#/parameters/ImageUrl"
+          },
+          {
+            "$ref": "#/parameters/TextRecognitionMode"
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The service has accepted the request and returns the operation status.",
+            "schema": {
+              "$ref": "#/definitions/ReadResult"
+            }
+          },
+          "default": {
+            "description": "Error response.",
+            "schema": {
+              "$ref": "#/definitions/ComputerVisionError"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful Domain Model analysis request": {
+            "$ref": "./examples/SuccessfulReadWithUrl.json"
+          }
+        }
+      }
+    },
+    "/readDocument": {
+      "post": {
+        "description": "Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called \"Operation-Location\". The \"Operation-Location\" field contains the URL that you must use for your \"Get Read Result operation\" to access OCR results.​",
+        "operationId": "ReadDocument",
+        "parameters": [
+          {
+            "$ref": "#/parameters/ImageUrl"
+          },
+          {
+            "$ref": "#/parameters/TextRecognitionMode"
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "202": {
+            "description": "The service has accepted the request and will start processing later.",
+            "headers": {
+              "Operation-Location": {
+                "description": "URL to query for status of the operation. The operation ID will expire in 48 hours. ",
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "description": "Error response.",
+            "schema": {
+              "$ref": "#/definitions/ComputerVisionError"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful Domain Model analysis request": {
+            "$ref": "./examples/SuccessfulReadDocumentWithUrl.json"
+          }
+        }
+      }
+    },
+    "/getReadResult/{operationId}": {
+      "get": {
+        "description": "This interface is used for getting OCR results of \"Read Document\" operation. The URL to this interface should be retrieved from \"Operation-Location\" field returned from Read Document interface.",
+        "operationId": "GetReadResult",
+        "parameters": [
+          {
+            "name": "operationId",
+            "in": "path",
+            "description": "Id of read operation returned in the response of the \"Read Document\" interface.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deleteResult",
+            "in": "query",
+            "description": "If this parameter is set to \"true\", OCR results are immediately discarded upon successful retrieval. This is an optional parameter, if it’s not specified, OCR results are not discarded by default.",
+            "type": "boolean",
+            "default": "false",
+            "enum": [
+              "true",
+              "false"
+            ]
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the read operation status.",
+            "schema": {
+              "$ref": "#/definitions/ReadResult"
+            }
+          },
+          "default": {
+            "description": "Error response.",
+            "schema": {
+              "$ref": "#/definitions/ComputerVisionError"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful Domain Model analysis request": {
+            "$ref": "./examples/SuccessfulGetReadResult.json"
+          }
+        }
+      }
     }
   },
   "x-ms-paths": {
@@ -154,6 +283,87 @@
           }
         }
       }
+    },
+    "/read?overload=stream": {
+      "post": {
+        "description": "Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms. When you use the Read interface, the response contains OCR results.",
+        "operationId": "ReadInStream",
+        "parameters": [
+          {
+            "$ref": "#/parameters/ImageStream"
+          },
+          {
+            "$ref": "#/parameters/TextRecognitionMode"
+          }
+        ],
+        "consumes": [
+          "application/octet-stream"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The service has accepted the request and returns the operation status.",
+            "schema": {
+              "$ref": "#/definitions/ReadResult"
+            }
+          },
+          "default": {
+            "description": "Error response.",
+            "schema": {
+              "$ref": "#/definitions/ComputerVisionError"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful Domain Model analysis request": {
+            "$ref": "./examples/SuccessfulReadWithStream.json"
+          }
+        }
+      }
+    },
+    "/readDocument?overload=stream": {
+      "post": {
+        "description": "Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called \"Operation-Location\". The \"Operation-Location\" field contains the URL that you must use for your \"Get Read Result operation\" to access OCR results.​",
+        "operationId": "ReadDocumentInStream",
+        "parameters": [
+          {
+            "$ref": "#/parameters/ImageStream"
+          },
+          {
+            "$ref": "#/parameters/TextRecognitionMode"
+          }
+        ],
+        "consumes": [
+          "application/octet-stream"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "202": {
+            "description": "The service has accepted the request and will start processing later.",
+            "headers": {
+              "Operation-Location": {
+                "description": "URL to query for status of the operation. The operation ID will expire in 48 hours. ",
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "description": "Error response.",
+            "schema": {
+              "$ref": "#/definitions/ComputerVisionError"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful Domain Model analysis request": {
+            "$ref": "./examples/SuccessfulReadDocumentWithStream.json"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -161,33 +371,66 @@
       "type": "object",
       "properties": {
         "status": {
-          "type": "string",
           "description": "Status of the text operation.",
-          "enum": [
-            "Not Started",
-            "Running",
-            "Failed",
-            "Succeeded"
-          ],
-          "x-ms-enum": {
-            "name": "TextOperationStatusCodes",
-            "modelAsString": false
-          },
-          "x-nullable": false
+          "$ref": "#/definitions/Status"
         },
         "recognitionResult": {
           "$ref": "#/definitions/RecognitionResult"
         }
       }
     },
+    "ReadResult": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "description": "Status of the text operation.",
+          "$ref": "#/definitions/Status"
+        },
+        "recognitionResults": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RecognitionResult"
+          }
+        }
+      }
+    },
+    "Status": {
+      "type": "string",
+      "enum": [
+        "Not Started",
+        "Running",
+        "Failed",
+        "Succeeded"
+      ],
+      "x-ms-enum": {
+        "name": "TextOperationStatusCodes",
+        "modelAsString": false
+      },
+      "x-nullable": false
+    },
     "RecognitionResult": {
       "type": "object",
+      "required": [
+        "lines"
+      ],
       "properties": {
         "lines": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/Line"
           }
+        },
+        "page": {
+          "type": "integer"
+        },
+        "width": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        },
+        "clockwiseOrientation": {
+          "type": "number"
         }
       }
     },
@@ -210,11 +453,18 @@
     },
     "Word": {
       "type": "object",
+      "required": [
+        "boundingBox",
+        "text"
+      ],
       "properties": {
         "boundingBox": {
           "$ref": "#/definitions/BoundingBox"
         },
         "text": {
+          "type": "string"
+        },
+        "confidence": {
           "type": "string"
         }
       }

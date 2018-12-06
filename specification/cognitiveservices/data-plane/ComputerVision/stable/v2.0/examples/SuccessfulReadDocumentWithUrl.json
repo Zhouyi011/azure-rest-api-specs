@@ -1,0 +1,15 @@
+{
+  "parameters": {
+    "Endpoint": "https://westus.api.cognitive.microsoft.com",
+    "Ocp-Apim-Subscription-Key": "{API key}",
+    "mode": "Printed",
+    "ImageUrl": "{url}"
+  },
+  "responses": {
+    "202": {
+      "header": {
+        "Operation-Location": "https://westus.api.cognitive.microsoft.com/vision/v2.0/getReadResult/e56ffa6e-1ee4-4042-bc07-993db706c95f"
+      }
+    }
+  }
+}
