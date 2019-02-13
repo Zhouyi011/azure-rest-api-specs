@@ -111,49 +111,10 @@
         }
       }
     },
-    "/read": {
+    "/read/core/asyncBatchAnalyze": {
       "post": {
-        "description": "Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms. When you use the Read interface, the response contains OCR results.",
-        "operationId": "Read",
-        "parameters": [
-          {
-            "$ref": "#/parameters/ImageUrl"
-          },
-          {
-            "$ref": "#/parameters/TextRecognitionMode"
-          }
-        ],
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "The service has accepted the request and returns the operation status.",
-            "schema": {
-              "$ref": "#/definitions/ReadResult"
-            }
-          },
-          "default": {
-            "description": "Error response.",
-            "schema": {
-              "$ref": "#/definitions/ComputerVisionError"
-            }
-          }
-        },
-        "x-ms-examples": {
-          "Successful Domain Model analysis request": {
-            "$ref": "./examples/SuccessfulReadWithUrl.json"
-          }
-        }
-      }
-    },
-    "/readDocument": {
-      "post": {
-        "description": "Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called \"Operation-Location\". The \"Operation-Location\" field contains the URL that you must use for your \"Get Read Result operation\" to access OCR results.​",
-        "operationId": "ReadDocument",
+        "description": "Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called \"Operation-Location\". The \"Operation-Location\" field contains the URL that you must use for your \"Read Operation Result\" operation to access OCR results.​",
+        "operationId": "BatchReadFile",
         "parameters": [
           {
             "$ref": "#/parameters/ImageUrl"
@@ -187,33 +148,22 @@
         },
         "x-ms-examples": {
           "Successful Domain Model analysis request": {
-            "$ref": "./examples/SuccessfulReadDocumentWithUrl.json"
+            "$ref": "./examples/SuccessfulBatchReadFileWithUrl.json"
           }
         }
       }
     },
-    "/getReadResult/{operationId}": {
+    "/read/operations/{operationId}": {
       "get": {
-        "description": "This interface is used for getting OCR results of \"Read Document\" operation. The URL to this interface should be retrieved from \"Operation-Location\" field returned from Read Document interface.",
-        "operationId": "GetReadResult",
+        "description": "This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from \"Operation-Location\" field returned from Batch Read File interface.",
+        "operationId": "GetReadOperationResult",
         "parameters": [
           {
             "name": "operationId",
             "in": "path",
-            "description": "Id of read operation returned in the response of the \"Read Document\" interface.",
+            "description": "Id of read operation returned in the response of the \"Batch Read File\" interface.",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "deleteResult",
-            "in": "query",
-            "description": "If this parameter is set to \"true\", OCR results are immediately discarded upon successful retrieval. This is an optional parameter, if it’s not specified, OCR results are not discarded by default.",
-            "type": "boolean",
-            "default": "false",
-            "enum": [
-              "true",
-              "false"
-            ]
           }
         ],
         "produces": [
@@ -223,7 +173,7 @@
           "200": {
             "description": "Returns the read operation status.",
             "schema": {
-              "$ref": "#/definitions/ReadResult"
+              "$ref": "#/definitions/ReadOperationResult"
             }
           },
           "default": {
@@ -235,7 +185,7 @@
         },
         "x-ms-examples": {
           "Successful Domain Model analysis request": {
-            "$ref": "./examples/SuccessfulGetReadResult.json"
+            "$ref": "./examples/SuccessfulReadOperationResult.json"
           }
         }
       }
@@ -284,49 +234,10 @@
         }
       }
     },
-    "/read?overload=stream": {
-      "post": {
-        "description": "Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms. When you use the Read interface, the response contains OCR results.",
-        "operationId": "ReadInStream",
-        "parameters": [
-          {
-            "$ref": "#/parameters/ImageStream"
-          },
-          {
-            "$ref": "#/parameters/TextRecognitionMode"
-          }
-        ],
-        "consumes": [
-          "application/octet-stream"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "The service has accepted the request and returns the operation status.",
-            "schema": {
-              "$ref": "#/definitions/ReadResult"
-            }
-          },
-          "default": {
-            "description": "Error response.",
-            "schema": {
-              "$ref": "#/definitions/ComputerVisionError"
-            }
-          }
-        },
-        "x-ms-examples": {
-          "Successful Domain Model analysis request": {
-            "$ref": "./examples/SuccessfulReadWithStream.json"
-          }
-        }
-      }
-    },
-    "/readDocument?overload=stream": {
+    "/read/core/asyncBatchAnalyze?overload=stream": {
       "post": {
         "description": "Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called \"Operation-Location\". The \"Operation-Location\" field contains the URL that you must use for your \"Get Read Result operation\" to access OCR results.​",
-        "operationId": "ReadDocumentInStream",
+        "operationId": "BatchReadFileInStream",
         "parameters": [
           {
             "$ref": "#/parameters/ImageStream"
@@ -360,7 +271,7 @@
         },
         "x-ms-examples": {
           "Successful Domain Model analysis request": {
-            "$ref": "./examples/SuccessfulReadDocumentWithStream.json"
+            "$ref": "./examples/SuccessfulBatchReadFileWithStream.json"
           }
         }
       }
@@ -375,11 +286,11 @@
           "$ref": "#/definitions/Status"
         },
         "recognitionResult": {
-          "$ref": "#/definitions/RecognitionResult"
+          "$ref": "#/definitions/TextRecognitionResult"
         }
       }
     },
-    "ReadResult": {
+    "ReadOperationResult": {
       "type": "object",
       "properties": {
         "status": {
@@ -389,7 +300,7 @@
         "recognitionResults": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/RecognitionResult"
+            "$ref": "#/definitions/TextRecognitionResult"
           }
         }
       }
@@ -408,7 +319,7 @@
       },
       "x-nullable": false
     },
-    "RecognitionResult": {
+    "TextRecognitionResult": {
       "type": "object",
       "required": [
         "lines"
@@ -431,6 +342,18 @@
         },
         "clockwiseOrientation": {
           "type": "number"
+        },
+        "unit": {
+          "type": "string",
+          "enum": [
+            "pixel",
+            "inch"
+          ],
+          "x-ms-enum": {
+            "name": "TextRecognitionResultDimensionUnit",
+            "modelAsString": false
+          },
+          "x-nullable": true
         }
       }
     },
@@ -465,7 +388,16 @@
           "type": "string"
         },
         "confidence": {
-          "type": "string"
+          "type": "string",
+          "enum": [
+            "High",
+            "Low"
+          ],
+          "x-ms-enum": {
+            "name": "TextRecognitionResultConfidenceClass",
+            "modelAsString": false
+          },
+          "x-nullable": true
         }
       }
     },

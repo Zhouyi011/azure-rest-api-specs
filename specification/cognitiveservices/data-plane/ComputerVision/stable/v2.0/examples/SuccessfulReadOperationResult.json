@@ -1,6 +1,6 @@
 {
   "parameters": {
-    "Endpoint": "https://westus.api.cognitive.microsoft.com",
+    "Endpoint": "{Endpoint}",
     "Ocp-Apim-Subscription-Key": "{API key}",
     "operationId": "e56ffa6e-1ee4-4042-bc07-993db706c95f"
   },
@@ -15,6 +15,7 @@
             "clockwiseOrientation": 349.59,
             "width": 600,
             "height": 400,
+            "unit": "pixel",
             "lines": [
               {
                 "boundingBox": [202, 618, 2047, 643, 2046, 840, 200, 813],
@@ -83,6 +84,7 @@
             "clockwiseOrientation": 1.32,
             "width": 600,
             "height": 400,
+            "unit": "pixel",
             "lines": [
               {
                 "boundingBox": [1612, 903, 2744, 935, 2738, 1139, 1607, 1107],
